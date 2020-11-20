@@ -9,6 +9,7 @@ import (
 
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
+	"github.com/AubSs/fasthttplogger"
 )
 
 /* 返回值的 content-type */
@@ -99,5 +100,9 @@ func RunServer() {
 	r.POST("/qa", onQA)
 
 	/* 启动server */
-	log.Fatal(fasthttp.ListenAndServe(":8080", r.Handler))
+	s := &fasthttp.Server{
+		Handler: fasthttplogger.Combined(r.Handler),
+		Name: "FastHttpLogger",
+	}
+	log.Fatal(s.ListenAndServe(":8080"))
 }

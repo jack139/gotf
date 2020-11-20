@@ -3,6 +3,7 @@ module gotf
 go 1.14
 
 require (
+	github.com/AubSs/fasthttplogger v0.0.0-20170531123222-7dab642e7dab
 	github.com/aclements/go-gg v0.0.0-20170323211221-abd1f791f5ee
 	github.com/buckhx/gobert v0.0.0-20190731141805-265756fed232
 	github.com/fasthttp/router v1.3.3

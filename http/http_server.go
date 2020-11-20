@@ -11,12 +11,6 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-/* 预训练模型路径 */
-const(
-	modelPath = "../../../nlp/albert_QA/outputs/saved-model"
-	vocabPath = "../../../nlp/nlp_model/albert_zh_base/vocab_chinese.txt"
-)
-
 /* 返回值的 content-type */
 var (
 	strContentType = []byte("Content-Type")

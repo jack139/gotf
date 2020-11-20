@@ -18,8 +18,8 @@ var corpus = `深度学习的基础是机器学习中的分散表示（distribut
 学习的形式出现，因而这些算法能被应用于其他算法无法企及的无标签数据，这一类数据比有标签数据更丰富，也更容易获
 得。这一点也为深度学习赢得了重要的优势。`
 
-//var question = "深度学习的优点是什么？"
-var question = "你是谁？"
+var question = "深度学习的优点是什么？"
+//var question = "你是谁？"
 
 func main() {
 	modelPath := "../../../nlp/albert_QA/outputs/saved-model"

@@ -21,7 +21,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 安装测试
 ```
-gcc hello_tf.c -ltensorflow -o hello_tf
+gcc examples/hello_tf.c -ltensorflow -o hello_tf
 ./hello_tf
 ```
 
@@ -33,10 +33,17 @@ go test github.com/tensorflow/tensorflow/tensorflow/go
 
 安装测试
 ```
-go run hello_tf.go
+go run examples/hello_tf.go
 ```
 
-### 编译
+### 问答测试
 ```
-go build bert.go
+go run examples/bert.go
+```
+
+### http服务测试
+```
+go build
+./gotf
+curl -X POST http://127.0.0.1:8080/qa --data '{"c":"我是小明，我8岁了。","q":"你多大了？"}'
 ```

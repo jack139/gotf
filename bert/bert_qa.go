@@ -78,9 +78,9 @@ func BertQA(corpus string, question string) (ans string, err error) {
 	}
 	ans = strings.Join(f.Tokens[st:ed+1], "")
 
-	if ans!="[CLS]" && ans!="[SEP]" && ans!="[CLS][SEP]" { // 找到答案
-		return ans, nil
-	} else {
+	if strings.HasPrefix(ans, "[CLS]") || strings.HasPrefix(ans, "[SEP]") {
 		return "", nil
+	} else {
+		return ans, nil // 找到答案
 	}
 }

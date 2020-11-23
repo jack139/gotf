@@ -73,7 +73,9 @@ func BertQA(corpus string, question string) string {
 
 	st := slice.ArgMax(res[0].Value().([][]float32)[0])
 	ed := slice.ArgMax(res[1].Value().([][]float32)[0])
-	ans := strings.Join(f.Tokens[st:ed+1], "")
+	if ed<st{ // ed 小于 st 说明未找到答案
+		st = ed
+	}
 
 	if ans!="[CLS]" && ans!="[SEP]" && ans!="[CLS][SEP]" { // 找到答案
 		return ans

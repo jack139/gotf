@@ -29,7 +29,7 @@ func InitModel(modelPath string, vocabPath string) {
 	}
 }
 
-func BertQA(corpus string, question string) string {
+func BertQA(corpus string, question string) (ans string, err error) {
 
 	tkz := tokenize.NewTokenizer(voc)
 	ff := tokenize.FeatureFactory{Tokenizer: tkz, SeqLen: MaxSeqLength}
@@ -40,7 +40,7 @@ func BertQA(corpus string, question string) string {
 
 	tids, err := tf.NewTensor([][]int32{f.TokenIDs})
 	if err != nil {
-		panic(err)
+		return ans, err
 	}
 	new_mask := make([]float32, len(f.Mask))
 	for i, v := range f.Mask {
@@ -48,11 +48,11 @@ func BertQA(corpus string, question string) string {
 	}
 	mask, err := tf.NewTensor([][]float32{new_mask})
 	if err != nil {
-		panic(err)
+		return ans, err
 	}
 	sids, err := tf.NewTensor([][]int32{f.TypeIDs})
 	if err != nil {
-		panic(err)
+		return ans, err
 	}
 
 	res, err := m.Session.Run(
@@ -68,7 +68,7 @@ func BertQA(corpus string, question string) string {
 		nil,
 	)
 	if err != nil {
-		panic(err)
+		return ans, err
 	}
 
 	st := slice.ArgMax(res[0].Value().([][]float32)[0])
@@ -76,10 +76,11 @@ func BertQA(corpus string, question string) string {
 	if ed<st{ // ed 小于 st 说明未找到答案
 		st = ed
 	}
+	ans = strings.Join(f.Tokens[st:ed+1], "")
 
 	if ans!="[CLS]" && ans!="[SEP]" && ans!="[CLS][SEP]" { // 找到答案
-		return ans
+		return ans, nil
 	} else {
-		return ""
+		return "", nil
 	}
 }

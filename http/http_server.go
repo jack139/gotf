@@ -73,9 +73,15 @@ func onQA(ctx *fasthttp.RequestCtx) {
 	}
 
 	/* 调用问答 */
-	ans := bert.BertQA(corpus.(string), question.(string))
-	log.Printf("%v", ans)
-	doJSONWrite(ctx, fasthttp.StatusOK, map[string] string {"code":"0","msg":"ok","data":ans})
+	ans, err := bert.BertQA(corpus.(string), question.(string))
+	if err!=nil {
+		log.Printf("ERROR: %s", err)
+		retJson["code"] = "9002"; retJson["msg"] = "backend error"
+		doJSONWrite(ctx, fasthttp.StatusOK, retJson)		
+	} else {
+		log.Printf("ans: %v", ans)
+		doJSONWrite(ctx, fasthttp.StatusOK, map[string] string {"code":"0","msg":"ok","data":ans})
+	}
 }
 
 /* 测试 */

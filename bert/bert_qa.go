@@ -29,6 +29,12 @@ func InitModel(modelPath string, vocabPath string) {
 	}
 }
 
+/* 判断是否是英文字符 */
+func isAlpha(c byte) bool {
+	return (c>=65 && c<=90) || (c>=97 && c<=122)
+}
+
+
 func BertQA(corpus string, question string) (ans string, err error) {
 
 	tkz := tokenize.NewTokenizer(voc)
@@ -76,7 +82,19 @@ func BertQA(corpus string, question string) (ans string, err error) {
 	if ed<st{ // ed 小于 st 说明未找到答案
 		st = ed
 	}
-	ans = strings.Join(f.Tokens[st:ed+1], "")
+	//ans = strings.Join(f.Tokens[st:ed+1], "")
+
+	// 处理token中的英文，例如： 'di', '##st', '##ri', '##bu', '##ted', 're', '##pr', '##ese', '##nt', '##ation',
+	ans = ""
+	for i:=st;i<ed+1;i++ {
+		if isAlpha(f.Tokens[i][0]){ // 英文开头，加空格
+			ans += " "+f.Tokens[i]
+		} else if strings.HasPrefix(f.Tokens[i], "##"){ // ##开头，是英文中段，去掉##
+			ans += f.Tokens[i][2:]
+		} else {
+			ans += f.Tokens[i]
+		}
+	}
 
 	if strings.HasPrefix(ans, "[CLS]") || strings.HasPrefix(ans, "[SEP]") {
 		return "", nil

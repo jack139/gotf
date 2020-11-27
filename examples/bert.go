@@ -89,7 +89,8 @@ func main() {
 	ed := slice.ArgMax(res[1].Value().([][]float32)[0])
 	fmt.Println(len(f.Tokens), st, ed)
 	if ed<st{ // ed 小于 st 说明未找到答案
-		st = ed
+		st = 0
+		ed = 0
 	}
 	//ans := strings.Join(f.Tokens[st:ed+1], "")
 
